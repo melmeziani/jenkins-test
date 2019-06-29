@@ -4,7 +4,7 @@ pipeline {
  stages {
         stage('Checkout-git'){
                steps{
-		git poll: true, url: 'git@github.com:videocursoscloud/test-jenkins-1.git'
+		git poll: true, url: 'git@github.com:melmeziani/jenkins-test.git'
                }
         }
         stage('CreateVirtualEnv') {
@@ -18,7 +18,7 @@ pipeline {
         stage('InstallRequirements') {
             steps {
             	sh '''
-            		bash -c "source ${WORKSPACE}/entorno_virtual/bin/activate && ${WORKSPACE}/entorno_virtual/bin/python ${WORKSPACE}/entorno_virtual/bin/pip install -r requirements.txt"
+            		bash -c "source ${WORKSPACE}/entorno_virtual/bin/activate && ${WORKSPACE}/entorno_virtual/bin/python ${WORKSPACE}/entorno_virtual/bin/pip install -r req.txt"
                 '''
             }
         }   
@@ -39,16 +39,16 @@ pipeline {
         stage('BuildDocker') {
             steps {
             	sh '''
-            		docker build -t apptest:latest .
+            		docker build -t app:latest .
                 '''
             }
         } 
     stage('PushDockerImage') {
             steps {
             	sh '''
-            		docker tag apptest:latest mijack/apptest:latest
-					docker push mijack/apptest:latest
-					docker rmi apptest:latest
+            		docker tag app:latest melmeziani/app:latest
+					docker push melmeziani/app:latest
+					docker rmi app:latest
                 '''
             }
         } 
